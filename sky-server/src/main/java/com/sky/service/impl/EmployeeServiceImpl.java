@@ -20,6 +20,7 @@ import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -121,5 +123,47 @@ public class EmployeeServiceImpl implements EmployeeService {
         PageInfo<Employee> emps = new PageInfo<>(employeeList);
 
         return new PageResult(emps.getTotal(), emps.getList());
+    }
+
+    /**
+     * 条件修改操作
+     * @param status
+     * @param id
+     */
+    @Override
+    public void StartOrStop(Integer status, Long id) {
+        Employee emp = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        employeeMapper.update(emp);
+    }
+
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getById(Long id) {
+        Employee emp = employeeMapper.selectById(id);
+        emp.setPassword("******");
+        return emp;
+    }
+
+    /**
+     * 修改员工基本信息
+     * @param employeeDTO
+     */
+    @Override
+    public void updateEmp(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        employeeMapper.update(employee);
     }
 }
