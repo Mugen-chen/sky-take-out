@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 @RestController("userShopController")
 @Api("店铺相关接口")
 @Slf4j
@@ -31,7 +33,7 @@ public class ShopController {
     @GetMapping("/status")
     public Result<Integer> getStatus() {
         Integer shopStatus = (Integer) redisTemplate.opsForValue().get(KEY);
-        log.info("获取店铺状态为：{}",shopStatus == StatusConstant.ENABLE ? "营业中" : "打烊中");
+        log.info("获取店铺状态为：{}", Objects.equals(shopStatus, StatusConstant.ENABLE) ? "营业中" : "打烊中");
 
         return Result.success(shopStatus);
     }
