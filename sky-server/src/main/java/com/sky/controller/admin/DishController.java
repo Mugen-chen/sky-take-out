@@ -117,16 +117,16 @@ public class DishController {
     }
 
     /**
-     * 根据分类ID查询菜品
-     * @param categoryId
+     * 根据分类ID查询菜品，或根据菜名模糊查询
+     * @param dish
      * @return
      */
-    @ApiOperation("根据分类ID查询菜品")
+    @ApiOperation("根据分类ID或菜品名称查询菜品")
     @GetMapping("/list")
-    public Result<List<Dish>> getByCategory(Long categoryId) {
-        log.info("根据分类ID查询菜品，categoryId：{}", categoryId);
+    public Result<List<Dish>> getByCategory(Dish dish) {
+        log.info("根据分类ID或菜品名称查询菜品，categoryId，name：{}，{}", dish.getCategoryId(), dish.getName());
 
-        List<Dish> dishs = dishService.selectByCategory(categoryId);
+        List<Dish> dishs = dishService.selectByCategory(dish);
 
         return Result.success(dishs);
     }
