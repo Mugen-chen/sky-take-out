@@ -61,4 +61,6 @@ public interface OrderMapper {
 
     @Select("select ifnull(sum(amount),0.0) from orders where status=#{completed} and DATE(order_time)=#{date}")
     BigDecimal sumAmount(LocalDate date, Integer completed);
+
+    Integer countOrders(LocalDate date, Integer status);
 }
