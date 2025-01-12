@@ -4,6 +4,8 @@ import com.sky.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDate;
+
 @Mapper
 public interface UserMapper {
 
@@ -23,4 +25,10 @@ public interface UserMapper {
 
     @Select("select * from user where id=#{userId}")
     User getById(Long userId);
+
+    @Select("select count(id) from user where DATE(create_time) <= #{date}")
+    Integer getTotalUser(LocalDate date);
+
+    @Select("select count(id) from user where DATE(create_time) = #{date}")
+    Integer countNewUser(LocalDate date);
 }
