@@ -6,6 +6,8 @@ import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,4 +58,7 @@ public interface OrderMapper {
      */
     @Select("select * from orders where status=#{status} and order_time < #{time}")
     List<Orders> getByStatusAndOrderTimeLT(Integer status, LocalDateTime time);
+
+    @Select("select ifnull(sum(amount),0.0) from orders where status=#{completed} and DATE(order_time)=#{date}")
+    BigDecimal sumAmount(LocalDate date, Integer completed);
 }
