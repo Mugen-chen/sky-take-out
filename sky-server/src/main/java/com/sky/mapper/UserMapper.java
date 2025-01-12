@@ -23,12 +23,27 @@ public interface UserMapper {
      */
     void insert(User user);
 
+    /**
+     * 查询用户信息
+     * @param userId
+     * @return
+     */
     @Select("select * from user where id=#{userId}")
     User getById(Long userId);
 
+    /**
+     * 统计用户总数
+     * @param date
+     * @return
+     */
     @Select("select count(id) from user where DATE(create_time) <= #{date}")
     Integer getTotalUser(LocalDate date);
 
+    /**
+     * 统计新增用户数量
+     * @param date
+     * @return
+     */
     @Select("select count(id) from user where DATE(create_time) = #{date}")
     Integer countNewUser(LocalDate date);
 }
